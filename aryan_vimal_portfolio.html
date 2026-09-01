@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aryan Vimal — QA Analyst & Data Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F6F5F1;
+    --paper-dim: #EDEBE3;
+    --ink: #1B2430;
+    --ink-soft: #57606D;
+    --line: #DAD7CB;
+    --pass: #2E7D5B;
+    --pass-bright: #3E9E74;
+    --pass-bg: #E4EFE8;
+    --flag: #A8442E;
+    --flag-bg: #F3E4DE;
+    --console: #10151D;
+    --console-line: #232C38;
+    --console-text: #D8DEE6;
+    --console-dim: #6C7A8C;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Public Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--pass-bright); outline-offset: 3px; }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ================= CONSOLE HERO ================= */
+  .console {
+    background: var(--console);
+    background-image:
+      radial-gradient(circle at 85% -10%, rgba(62,158,116,0.18), transparent 55%),
+      linear-gradient(var(--console-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--console-line) 1px, transparent 1px);
+    background-size: auto, 42px 42px, 42px 42px;
+    background-position: 0 0, -1px -1px, -1px -1px;
+    color: var(--console-text);
+    padding: 56px 0 44px;
+    border-bottom: 3px solid var(--pass);
+  }
+
+  .console-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 30px;
+    opacity: 0.7;
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--console-dim); }
+  .console-path {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--console-dim);
+    margin-left: 8px;
+  }
+
+  .term-line {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--console-dim);
+    margin: 0 0 6px;
+    opacity: 0;
+    animation: reveal 0.4s ease forwards;
+  }
+  .term-line .prompt { color: var(--pass-bright); }
+  .term-line.l1 { animation-delay: 0.05s; }
+  .term-line.l2 { animation-delay: 0.35s; }
+
+  .name {
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: clamp(38px, 7vw, 56px);
+    letter-spacing: -0.025em;
+    color: #fff;
+    margin: 16px 0 6px;
+    opacity: 0;
+    animation: reveal 0.5s ease forwards;
+    animation-delay: 0.6s;
+  }
+
+  .role-line {
+    font-size: 18px;
+    color: var(--console-text);
+    margin-bottom: 26px;
+    opacity: 0;
+    animation: reveal 0.5s ease forwards;
+    animation-delay: 0.8s;
+  }
+  .role-line .cursor {
+    display: inline-block;
+    width: 9px;
+    height: 18px;
+    background: var(--pass-bright);
+    margin-left: 4px;
+    vertical-align: -3px;
+    animation: blink 1s steps(1) infinite;
+  }
+
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--console-dim);
+    opacity: 0;
+    animation: reveal 0.5s ease forwards;
+    animation-delay: 1s;
+  }
+  .contact-row .sep { color: #3A4453; }
+  .contact-row a { text-decoration: none; color: var(--console-text); border-bottom: 1px solid transparent; }
+  .contact-row a:hover { border-color: var(--pass-bright); color: var(--pass-bright); }
+
+  /* ---------- Stats ledger (still in console) ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 34px;
+    border-top: 1px solid var(--console-line);
+    opacity: 0;
+    animation: reveal 0.5s ease forwards;
+    animation-delay: 1.15s;
+  }
+
+  .stat {
+    padding: 20px 16px 4px;
+    border-right: 1px solid var(--console-line);
+  }
+  .stat:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--pass-bright);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--console-dim);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .term-line, .name, .role-line, .contact-row, .stats { opacity: 1; animation: none; }
+    .role-line .cursor { animation: none; }
+  }
+
+  /* ================= REPORT BODY ================= */
+  section.case {
+    padding: 40px 0 40px 22px;
+    border-bottom: 1px solid var(--line);
+    border-left: 3px solid var(--line);
+    margin-left: 2px;
+    transition: border-color 0.2s ease;
+  }
+  section.case:hover { border-left-color: var(--pass); }
+
+  .case-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .case-id {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  .case-title {
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 4px 0 0;
+  }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    box-shadow: inset 0 0 0 1px rgba(46,125,91,0.25);
+  }
+  .badge.pass { background: var(--pass-bg); color: var(--pass); }
+  .badge.flag { background: var(--flag-bg); color: var(--flag); box-shadow: inset 0 0 0 1px rgba(168,68,46,0.25); }
+
+  .meta-line {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    margin: 2px 0 18px;
+  }
+
+  ul.steps {
+    margin: 0;
+    padding-left: 20px;
+  }
+  ul.steps li {
+    margin-bottom: 10px;
+    font-size: 15.5px;
+  }
+  ul.steps li::marker {
+    font-family: var(--mono);
+    color: var(--pass);
+    content: "✓  ";
+  }
+
+  .stack-line {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 16px;
+  }
+
+  .case-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--pass);
+    border-bottom: 1px solid var(--pass);
+    padding-bottom: 1px;
+  }
+  .case-link:hover { color: var(--ink); border-color: var(--ink); }
+  .case-link svg { width: 13px; height: 13px; transition: transform 0.15s ease; }
+  .case-link:hover svg { transform: translate(2px, -2px); }
+
+  /* ---------- Skills matrix ---------- */
+  .matrix { display: grid; gap: 16px; }
+  .matrix-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+    align-items: start;
+    padding: 12px 0;
+    border-top: 1px solid var(--paper-dim);
+  }
+  .matrix-row:first-child { border-top: none; }
+
+  .matrix-key {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--pass);
+    padding-top: 5px;
+    font-weight: 600;
+  }
+
+  .chip-set { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-size: 13.5px;
+    padding: 6px 12px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: #fff;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .chip:hover { border-color: var(--pass); background: var(--pass-bg); }
+
+  /* ---------- Certs / education log ---------- */
+  .log-entry {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--paper-dim);
+  }
+  .log-entry:first-child { border-top: none; }
+  .log-year { font-family: var(--mono); font-size: 13px; color: var(--pass); }
+  .log-body strong { font-weight: 700; }
+  .log-body span { color: var(--ink-soft); font-size: 14px; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    padding: 48px 0 64px 22px;
+    border-left: 3px solid var(--pass);
+    margin-left: 2px;
+  }
+  .footer-title { font-size: 26px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.015em; }
+  .footer-sub { color: var(--ink-soft); margin-bottom: 22px; max-width: 480px; }
+  .footer-contact {
+    font-family: var(--mono);
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .footer-contact a { text-decoration: none; }
+  .footer-contact a:hover { color: var(--pass); }
+  .exit-code {
+    margin-top: 34px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .exit-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pass); box-shadow: 0 0 0 3px var(--pass-bg); }
+
+  @media (max-width: 600px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(2) { border-right: none; }
+    .stat:nth-child(2n) { border-right: none; }
+    .matrix-row { grid-template-columns: 1fr; }
+    .log-entry { grid-template-columns: 70px 1fr; }
+    section.case, footer { padding-left: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="console">
+  <div class="wrap">
+    <div class="console-bar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="console-path">~/qa-analyst-profile</span>
+    </div>
+    <p class="term-line l1"><span class="prompt">$</span> run profile.spec --candidate="Aryan Vimal" --roles=qa,data-engineer</p>
+    <p class="term-line l2">→ loading profile... suite passed, 0 failures</p>
+    <h1 class="name">Aryan Vimal</h1>
+    <p class="role-line">QA Analyst &amp; Data Engineer — Testing, Automation &amp; Data Pipelines<span class="cursor"></span></p>
+    <div class="contact-row">
+      <span>+91 8576803898</span>
+      <span class="sep">/</span>
+      <a href="mailto:aryanvimal_202310101150133@srmu.ac.in">aryanvimal_202310101150133@srmu.ac.in</a>
+      <span class="sep">/</span>
+      <a href="https://github.com/aryanvimal202310101150133-cloud" target="_blank" rel="noopener">github.com/aryanvimal202310101150133-cloud</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-num">1,000+</span>
+        <span class="stat-label">test cases executed</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">500+</span>
+        <span class="stat-label">test scenarios covered</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">100+</span>
+        <span class="stat-label">defects logged &amp; closed</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">10K+</span>
+        <span class="stat-label">records processed in data pipelines</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- SUMMARY -->
+  <section class="case" style="padding-top:38px;">
+    <div class="case-id">TC-000 · SUMMARY</div>
+    <p style="font-size:16.5px; margin-top:14px;">
+      Detail-oriented QA analyst and data engineer who has run manual and automation testing across
+      the full STLC — from writing test cases to closing the loop on defects — while also building the
+      pipelines and dashboards that turn raw data into decisions. Comfortable in Python, SQL, Selenium
+      and Playwright on the testing side, and Pandas-driven data cleaning, transformation, and
+      visualization on the data side. Works closely with developers and stakeholders to ship reliable
+      software and reliable data, without cutting corners on either.
+    </p>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="case">
+    <div class="case-head">
+      <div>
+        <div class="case-id">TC-001 · EXPERIENCE</div>
+        <h2 class="case-title">QA Analyst / Testing Intern</h2>
+      </div>
+      <span class="badge pass">PASS</span>
+    </div>
+    <p class="meta-line">Sysculus Systems Private Limited — Gurugram, India · June 2026 – Aug 2026</p>
+    <ul class="steps">
+      <li>Designed and executed 1,000+ test cases across functional, smoke, sanity and regression testing for web applications.</li>
+      <li>Ran 500+ test scenarios across multiple modules and workflows to reach full end-to-end coverage.</li>
+      <li>Logged and tracked 100+ defects through structured Jira bug reports, then retested to confirm every fix.</li>
+      <li>Automated repetitive regression checks with Selenium and Playwright, and validated backend data with SQL to shorten test cycles.</li>
+      <li>Worked with developers and QA leads to sharpen test plans and STLC process, improving release quality and turnaround time.</li>
+    </ul>
+  </section>
+
+  <!-- PROJECT 1 -->
+  <section class="case">
+    <div class="case-head">
+      <div>
+        <div class="case-id">TC-002 · PROJECT — DATA ENGINEERING</div>
+        <h2 class="case-title">Retail Sales Analytics Dashboard</h2>
+      </div>
+      <span class="badge pass">PASS</span>
+    </div>
+    <ul class="steps">
+      <li>Built an interactive dashboard on 10,000+ retail records (2023–2026) covering sales, profit trends, region &amp; category performance, and top products.</li>
+      <li>Cleaned and shaped the data in Python with Pandas, then visualized it with HTML, CSS, JS and Chart.js — charts and KPI cards included.</li>
+    </ul>
+    <div class="stack-line">STACK: Python · Pandas · HTML · CSS · JavaScript · Chart.js</div>
+    <a class="case-link" href="https://aryanvimal202310101150133-cloud.github.io/sales-Data-Analysis" target="_blank" rel="noopener">
+      View live project
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+    </a>
+  </section>
+
+  <!-- PROJECT 2 -->
+  <section class="case">
+    <div class="case-head">
+      <div>
+        <div class="case-id">TC-003 · PROJECT</div>
+        <h2 class="case-title">VerityQA — Test Management Console</h2>
+      </div>
+      <span class="badge pass">PASS</span>
+    </div>
+    <ul class="steps">
+      <li>Built a web console to centralize projects, test cases, execution reports and QA analytics in one place.</li>
+      <li>Added secure login, test case/suite management, and pass/fail analytics tied to defect tracking.</li>
+      <li>Designed the underlying data structure to store and query test case, suite and defect records efficiently.</li>
+    </ul>
+    <div class="stack-line">STACK: HTML5 · CSS3 · JavaScript</div>
+    <a class="case-link" href="https://aryanvimal202310101150133-cloud.github.io/QA-Dashboard" target="_blank" rel="noopener">
+      View live project
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+    </a>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="case">
+    <div class="case-id" style="margin-bottom:20px;">TC-004 · SKILLS COVERAGE</div>
+    <div class="matrix">
+      <div class="matrix-row">
+        <div class="matrix-key">testing</div>
+        <div class="chip-set">
+          <span class="chip">Manual Testing</span><span class="chip">Functional</span><span class="chip">Regression</span>
+          <span class="chip">Smoke</span><span class="chip">Sanity</span><span class="chip">STLC</span>
+          <span class="chip">SDLC</span><span class="chip">Test Case Design</span><span class="chip">Test Plans</span>
+          <span class="chip">Defect Life Cycle</span><span class="chip">UAT</span>
+        </div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-key">automation</div>
+        <div class="chip-set">
+          <span class="chip">Selenium</span><span class="chip">Playwright</span><span class="chip">Test Automation</span><span class="chip">API Testing</span>
+        </div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-key">tools</div>
+        <div class="chip-set">
+          <span class="chip">Jira</span><span class="chip">Git</span><span class="chip">GitHub</span><span class="chip">Postman</span>
+        </div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-key">programming</div>
+        <div class="chip-set">
+          <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span>
+        </div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-key">data engineering</div>
+        <div class="chip-set">
+          <span class="chip">Data Cleaning</span><span class="chip">Pandas</span><span class="chip">SQL Queries</span>
+          <span class="chip">Data Transformation</span><span class="chip">Dashboarding</span><span class="chip">Chart.js</span>
+        </div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-key">QA concepts</div>
+        <div class="chip-set">
+          <span class="chip">Agile</span><span class="chip">Bug Life Cycle</span><span class="chip">Test Scenario</span>
+          <span class="chip">Test Suite</span><span class="chip">Test Execution</span><span class="chip">Defect Management</span>
+          <span class="chip">Cross-browser Testing</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTS + EDUCATION -->
+  <section class="case">
+    <div class="case-id" style="margin-bottom:20px;">TC-005 · CERTIFICATIONS &amp; EDUCATION</div>
+    <div class="log-entry">
+      <div class="log-year">2026</div>
+      <div class="log-body"><strong>Risk Management Job Simulation</strong> <span>— Goldman Sachs (Forage)</span></div>
+    </div>
+    <div class="log-entry">
+      <div class="log-year">2026</div>
+      <div class="log-body"><strong>Data Analytics Job Simulation</strong> <span>— Deloitte Australia (Forage)</span></div>
+    </div>
+    <div class="log-entry">
+      <div class="log-year">—</div>
+      <div class="log-body"><strong>Python Programming &amp; Web Development</strong> <span>— L&amp;T EduTech</span></div>
+    </div>
+    <div class="log-entry">
+      <div class="log-year">—</div>
+      <div class="log-body"><strong>HTML Certification</strong> <span>— SoloLearn</span></div>
+    </div>
+    <div class="log-entry">
+      <div class="log-year">—</div>
+      <div class="log-body"><strong>Google AI-Powered Shopping Ads Certification</strong> <span>— Google</span></div>
+    </div>
+    <div class="log-entry">
+      <div class="log-year">2023–27</div>
+      <div class="log-body"><strong>B.Tech, Computer Science &amp; Engineering</strong> <span>(Data Science &amp; AI) — Shri Ramswaroop Memorial University, Lucknow</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-title">Let's work together</div>
+    <p class="footer-sub">Open to QA analyst and automation testing roles — happy to walk through any test case, defect log, or project above in more detail.</p>
+    <div class="footer-contact">
+      <span>MAIL &nbsp; <a href="mailto:aryanvimal_202310101150133@srmu.ac.in">aryanvimal_202310101150133@srmu.ac.in</a></span>
+      <span>CALL &nbsp; +91 8576803898</span>
+      <span>CODE &nbsp; <a href="https://github.com/aryanvimal202310101150133-cloud" target="_blank" rel="noopener">github.com/aryanvimal202310101150133-cloud</a></span>
+    </div>
+    <div class="exit-code"><span class="exit-dot"></span> process finished — exit code 0</div>
+  </footer>
+
+</div>
+
+</body>
+</html>
